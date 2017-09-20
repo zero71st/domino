@@ -38,13 +38,17 @@
             this.gvCards = new System.Windows.Forms.DataGridView();
             this.label3 = new System.Windows.Forms.Label();
             this.tbMessageName = new System.Windows.Forms.TextBox();
-            this.btPrint = new System.Windows.Forms.Button();
             this.tbPin1 = new System.Windows.Forms.TextBox();
             this.tbPin2 = new System.Windows.Forms.TextBox();
             this.tbSno1 = new System.Windows.Forms.TextBox();
             this.tbBar1 = new System.Windows.Forms.TextBox();
             this.tbSno2 = new System.Windows.Forms.TextBox();
             this.tbBar2 = new System.Windows.Forms.TextBox();
+            this.btLoadMessage = new System.Windows.Forms.Button();
+            this.btSendVtextData = new System.Windows.Forms.Button();
+            this.btReboot = new System.Windows.Forms.Button();
+            this.btActivateGroup = new System.Windows.Forms.Button();
+            this.btDeactivateGroup = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.gvCards)).BeginInit();
             this.SuspendLayout();
             // 
@@ -102,9 +106,9 @@
             // 
             // btClose
             // 
-            this.btClose.Location = new System.Drawing.Point(557, 379);
+            this.btClose.Location = new System.Drawing.Point(588, 424);
             this.btClose.Name = "btClose";
-            this.btClose.Size = new System.Drawing.Size(75, 23);
+            this.btClose.Size = new System.Drawing.Size(168, 23);
             this.btClose.TabIndex = 7;
             this.btClose.Text = "Close";
             this.btClose.UseVisualStyleBackColor = true;
@@ -112,9 +116,9 @@
             // gvCards
             // 
             this.gvCards.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.gvCards.Location = new System.Drawing.Point(36, 208);
+            this.gvCards.Location = new System.Drawing.Point(36, 202);
             this.gvCards.Name = "gvCards";
-            this.gvCards.Size = new System.Drawing.Size(596, 112);
+            this.gvCards.Size = new System.Drawing.Size(516, 245);
             this.gvCards.TabIndex = 8;
             // 
             // label3
@@ -132,16 +136,7 @@
             this.tbMessageName.Name = "tbMessageName";
             this.tbMessageName.Size = new System.Drawing.Size(166, 23);
             this.tbMessageName.TabIndex = 10;
-            // 
-            // btPrint
-            // 
-            this.btPrint.Location = new System.Drawing.Point(511, 326);
-            this.btPrint.Name = "btPrint";
-            this.btPrint.Size = new System.Drawing.Size(121, 23);
-            this.btPrint.TabIndex = 11;
-            this.btPrint.Text = "Print";
-            this.btPrint.UseVisualStyleBackColor = true;
-            this.btPrint.Click += new System.EventHandler(this.btPrint_Click);
+            this.tbMessageName.Text = "dz";
             // 
             // tbPin1
             // 
@@ -191,18 +186,70 @@
             this.tbBar2.TabIndex = 17;
             this.tbBar2.Text = "BAR2";
             // 
+            // btLoadMessage
+            // 
+            this.btLoadMessage.Location = new System.Drawing.Point(588, 130);
+            this.btLoadMessage.Name = "btLoadMessage";
+            this.btLoadMessage.Size = new System.Drawing.Size(168, 23);
+            this.btLoadMessage.TabIndex = 18;
+            this.btLoadMessage.Text = "Load Message";
+            this.btLoadMessage.UseVisualStyleBackColor = true;
+            this.btLoadMessage.Click += new System.EventHandler(this.btLoadMessage_Click);
+            // 
+            // btSendVtextData
+            // 
+            this.btSendVtextData.Location = new System.Drawing.Point(588, 159);
+            this.btSendVtextData.Name = "btSendVtextData";
+            this.btSendVtextData.Size = new System.Drawing.Size(168, 23);
+            this.btSendVtextData.TabIndex = 19;
+            this.btSendVtextData.Text = "Send Vtext Data";
+            this.btSendVtextData.UseVisualStyleBackColor = true;
+            this.btSendVtextData.Click += new System.EventHandler(this.btSendVtextData_Click);
+            // 
+            // btReboot
+            // 
+            this.btReboot.Location = new System.Drawing.Point(588, 101);
+            this.btReboot.Name = "btReboot";
+            this.btReboot.Size = new System.Drawing.Size(168, 23);
+            this.btReboot.TabIndex = 20;
+            this.btReboot.Text = "Reboot";
+            this.btReboot.UseVisualStyleBackColor = true;
+            this.btReboot.Click += new System.EventHandler(this.btReboot_Click);
+            // 
+            // btActivateGroup
+            // 
+            this.btActivateGroup.Location = new System.Drawing.Point(588, 271);
+            this.btActivateGroup.Name = "btActivateGroup";
+            this.btActivateGroup.Size = new System.Drawing.Size(168, 23);
+            this.btActivateGroup.TabIndex = 21;
+            this.btActivateGroup.Text = "Activate Group";
+            this.btActivateGroup.UseVisualStyleBackColor = true;
+            // 
+            // btDeactivateGroup
+            // 
+            this.btDeactivateGroup.Location = new System.Drawing.Point(588, 300);
+            this.btDeactivateGroup.Name = "btDeactivateGroup";
+            this.btDeactivateGroup.Size = new System.Drawing.Size(168, 23);
+            this.btDeactivateGroup.TabIndex = 22;
+            this.btDeactivateGroup.Text = "Deactivate Group";
+            this.btDeactivateGroup.UseVisualStyleBackColor = true;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(665, 414);
+            this.ClientSize = new System.Drawing.Size(773, 462);
+            this.Controls.Add(this.btDeactivateGroup);
+            this.Controls.Add(this.btActivateGroup);
+            this.Controls.Add(this.btReboot);
+            this.Controls.Add(this.btSendVtextData);
+            this.Controls.Add(this.btLoadMessage);
             this.Controls.Add(this.tbBar2);
             this.Controls.Add(this.tbSno2);
             this.Controls.Add(this.tbBar1);
             this.Controls.Add(this.tbSno1);
             this.Controls.Add(this.tbPin2);
             this.Controls.Add(this.tbPin1);
-            this.Controls.Add(this.btPrint);
             this.Controls.Add(this.tbMessageName);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.gvCards);
@@ -235,13 +282,17 @@
         private System.Windows.Forms.DataGridView gvCards;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox tbMessageName;
-        private System.Windows.Forms.Button btPrint;
         private System.Windows.Forms.TextBox tbPin1;
         private System.Windows.Forms.TextBox tbPin2;
         private System.Windows.Forms.TextBox tbSno1;
         private System.Windows.Forms.TextBox tbBar1;
         private System.Windows.Forms.TextBox tbSno2;
         private System.Windows.Forms.TextBox tbBar2;
+        private System.Windows.Forms.Button btLoadMessage;
+        private System.Windows.Forms.Button btSendVtextData;
+        private System.Windows.Forms.Button btReboot;
+        private System.Windows.Forms.Button btActivateGroup;
+        private System.Windows.Forms.Button btDeactivateGroup;
     }
 }
 

@@ -88,67 +88,148 @@ namespace Domino
             }
         }
 
-        private void btPrint_Click(object sender, EventArgs e)
+        private byte[] Reboot()
         {
-            byte slaveAddress = 1;
-            byte function = 9;
-            ushort id = function;
+            byte[] frame = new byte[9];
 
+            frame[0] = 0x00; // Transaction ID MSB
+            frame[1] = 0x00; // Transaction ID LSB
 
-        }
+            frame[2] = 0x00; // Protocal ID MSB
+            frame[3] = 0x00; // Protocal ID LSB
 
-        private byte[] SendVtextToMessage()
-        {
-            byte[] frame = new byte[46];
+            frame[4] = 0x00; // Nr following MSB
+            frame[5] = 0x04; // Nr following LSB
 
-            frame[0] = 0x00;
-            frame[1] = 0x00;
-            frame[2];
-            frame[3];
-            frame[4];
-            frame[5];
-            frame[6];
-            frame[7];
-            frame[8];
-            frame[9];
-            frame[10];
-            frame[11];
-            frame[12];
-            frame[13];
-            frame[14];
-            frame[15];
-            frame[16];
-            frame[17];
-            frame[18];
-            frame[19];
-            frame[20];
-            frame[21];
-            frame[22];
-            frame[23];
-            frame[24];
-            frame[25];
-            frame[26];
-            frame[27];
-            frame[28];
-            frame[29];
-            frame[30];
-            frame[31];
-            frame[32];
-            frame[33];
-            frame[34];
-            frame[35];
-            frame[36];
-            frame[37];
-            frame[38];
-            frame[39];
-            frame[40];
-            frame[41];
-            frame[42];
-            frame[43];
-            frame[44];
-            frame[45];
+            frame[6] = 0x01; // Unit Identifier
+            frame[7] = 0x65; // Fucntion code
+            frame[8] = 0x0A; // Reboot
+            frame[9] = 0x00; // Zero Teminating
+
             return frame;
         }
 
+        private byte[] SendVtextDataToMessage()
+        {
+            byte[] frame = new byte[54];
+
+            frame[0] = 0x00; // Transaction ID MSB
+            frame[1] = 0x00; // Transaction ID LSB
+
+            frame[2] = 0x00; // Protocal ID MSB
+            frame[3] = 0x00; // Protocal ID LSB
+
+            frame[4] = 0x00; // Nr following MSB
+            frame[5] = 0x30; // Nr following LSB - 48 bytes
+
+            frame[6] = 0x01; // Unit Identifier
+            frame[7] = 0x65; // Fucntion code
+            frame[8] = 0x09; // Set_string
+            frame[9] = 0x00; // Status
+
+            frame[10] = 0x00; // Identifier Hi
+            frame[11] = 0x00; // Identifier Lo
+            frame[12] = 0x01; // Number of string
+
+            frame[13] = 0x03; // Variable Vtext-03
+            //frame[14] = 0x1E; // Following bytes 30 bytes
+            frame[14] = 0x27; // Following bytes 39 bytes
+
+            frame[15] = 0x50; // P - First byte for Vtext Name (20 bytes)
+            frame[16] = 0x49; // I 
+            frame[17] = 0x4E; // N
+            frame[18] = 0x31; // 1
+            frame[19] = 0x00;
+            frame[20] = 0x00;
+            frame[21] = 0x00;
+            frame[22] = 0x00;
+            frame[23] = 0x00;
+            frame[24] = 0x00;
+            frame[25] = 0x00;
+            frame[26] = 0x00;
+            frame[27] = 0x00;
+            frame[28] = 0x00;
+            frame[29] = 0x00;
+            frame[30] = 0x00;
+            frame[31] = 0x00;
+            frame[32] = 0x00;
+            frame[33] = 0x00;
+            frame[34] = 0x00; // End tyte for Vtext Name
+
+            frame[35] = 0x00; // Nr of print MSB
+            frame[36] = 0x00; // Nr of print LSB
+
+            frame[37] = 0x01; // First byte vtext content
+            frame[38] = 0x02;
+            frame[39] = 0x03;
+            frame[40] = 0x04;
+
+            frame[41] = 0x05;
+            frame[42] = 0x06;
+            frame[43] = 0x07; 
+            frame[44] = 0x08;
+
+            frame[45] = 0x09;
+            frame[46] = 0x00;
+            frame[47] = 0x01;
+            frame[48] = 0x02;
+
+            frame[49] = 0x03;
+            frame[50] = 0x04;
+            frame[51] = 0x05;
+            frame[52] = 0x06; // End byte vtext content
+
+            frame[53] = 0x00; // Zero terminating
+            return frame;
+        }
+
+        private byte[] LoadMessageForPrinting()
+        {
+            byte[] frame = new byte[19];
+
+            frame[0] = 0x00; // Transaction ID MSB
+            frame[1] = 0x00; // Transaction ID LSB
+
+            frame[2] = 0x00; // Protocal ID MSB
+            frame[3] = 0x00; // Protocal ID LSB
+
+            frame[4] = 0x00; // Nr following MSB
+            frame[5] = 0x10; // Nr following LSB
+
+            frame[6] = 0x01; // Unit Identifier
+            frame[7] = 0x65; // Fucntion code
+            frame[8] = 0x09; // Set_string
+            frame[9] = 0x00; // Status
+
+            frame[10] = 0x00; // Identifier Hi
+            frame[11] = 0x00; // Identifier Lo
+            frame[12] = 0x01; // Number of string
+
+            frame[13] = 0x01; // File name
+            frame[14] = 0x04; // Following bytes
+            frame[15] = 0x01; // Print Group
+
+            frame[16] = 0x64; // d
+            frame[17] = 0x7A; // z
+
+            frame[18] = 0x00; // Zero Teminating
+
+            return frame;
+        }
+
+        private void btLoadMessage_Click(object sender, EventArgs e)
+        {
+            LoadMessageForPrinting();
+        }
+
+        private void btSendVtextData_Click(object sender, EventArgs e)
+        {
+            SendVtextDataToMessage();
+        }
+
+        private void btReboot_Click(object sender, EventArgs e)
+        {
+            Reboot();
+        }
     }
 }
