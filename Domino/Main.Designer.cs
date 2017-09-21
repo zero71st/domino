@@ -53,6 +53,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.tbSendMsg = new System.Windows.Forms.TextBox();
             this.tbReceiveMsg = new System.Windows.Forms.TextBox();
+            this.ckHardcode = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.gvCards)).BeginInit();
             this.SuspendLayout();
             // 
@@ -110,7 +111,7 @@
             // 
             // btClose
             // 
-            this.btClose.Location = new System.Drawing.Point(588, 440);
+            this.btClose.Location = new System.Drawing.Point(588, 382);
             this.btClose.Name = "btClose";
             this.btClose.Size = new System.Drawing.Size(168, 23);
             this.btClose.TabIndex = 7;
@@ -261,21 +262,32 @@
             // 
             this.tbSendMsg.Location = new System.Drawing.Point(165, 411);
             this.tbSendMsg.Name = "tbSendMsg";
-            this.tbSendMsg.Size = new System.Drawing.Size(387, 23);
+            this.tbSendMsg.Size = new System.Drawing.Size(591, 23);
             this.tbSendMsg.TabIndex = 25;
             // 
             // tbReceiveMsg
             // 
             this.tbReceiveMsg.Location = new System.Drawing.Point(164, 440);
             this.tbReceiveMsg.Name = "tbReceiveMsg";
-            this.tbReceiveMsg.Size = new System.Drawing.Size(387, 23);
+            this.tbReceiveMsg.Size = new System.Drawing.Size(592, 23);
             this.tbReceiveMsg.TabIndex = 26;
+            // 
+            // ckHardcode
+            // 
+            this.ckHardcode.AutoSize = true;
+            this.ckHardcode.Location = new System.Drawing.Point(588, 74);
+            this.ckHardcode.Name = "ckHardcode";
+            this.ckHardcode.Size = new System.Drawing.Size(96, 21);
+            this.ckHardcode.TabIndex = 27;
+            this.ckHardcode.Text = "Hard code";
+            this.ckHardcode.UseVisualStyleBackColor = true;
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(773, 475);
+            this.Controls.Add(this.ckHardcode);
             this.Controls.Add(this.tbReceiveMsg);
             this.Controls.Add(this.tbSendMsg);
             this.Controls.Add(this.label5);
@@ -338,6 +350,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox tbSendMsg;
         private System.Windows.Forms.TextBox tbReceiveMsg;
+        private System.Windows.Forms.CheckBox ckHardcode;
     }
 }
 

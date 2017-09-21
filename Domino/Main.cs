@@ -88,6 +88,7 @@ namespace Domino
             }
         }
 
+        #region Hard code
         private byte[] Reboot()
         {
             byte[] frame = new byte[10];
@@ -105,6 +106,40 @@ namespace Domino
             frame[7] = 0x65; // Fucntion code
             frame[8] = 0x0A; // Reboot
             frame[9] = 0x00; // Zero Teminating
+
+            return frame;
+        }
+
+        private byte[] LoadMessageForPrinting()
+        {
+            byte[] frame = new byte[19];
+
+            frame[0] = 0x00; // Transaction ID MSB
+            frame[1] = 0x00; // Transaction ID LSB
+
+            frame[2] = 0x00; // Protocal ID MSB
+            frame[3] = 0x00; // Protocal ID LSB
+
+            frame[4] = 0x00; // Nr following MSB
+            frame[5] = 0x0D; // Nr following LSB
+
+            frame[6] = 0x01; // Unit Identifier
+            frame[7] = 0x65; // Fucntion code
+            frame[8] = 0x09; // Set_string
+            frame[9] = 0x00; // Status
+
+            frame[10] = 0x00; // Identifier Hi
+            frame[11] = 0x00; // Identifier Lo
+            frame[12] = 0x01; // Number of string
+
+            frame[13] = 0x01; // File name
+            frame[14] = 0x04; // Following bytes
+            frame[15] = 0x01; // Print Group
+
+            frame[16] = 0x64; // d
+            frame[17] = 0x7A; // z
+
+            frame[18] = 0x00; // Zero Teminating
 
             return frame;
         }
@@ -132,7 +167,6 @@ namespace Domino
             frame[12] = 0x01; // Number of string
 
             frame[13] = 0x03; // Variable Vtext-03
-            //frame[14] = 0x1E; // Following bytes 30 bytes
             frame[14] = 0x27; // Following bytes 39 bytes
 
             frame[15] = 0x50; // P - First byte for Vtext Name (20 bytes)
@@ -183,9 +217,18 @@ namespace Domino
             return frame;
         }
 
-        private byte[] LoadMessageForPrinting()
+        private byte[] SendVtextDataToMessage(string vtextName,string vtextData)
         {
-            byte[] frame = new byte[19];
+            byte[] vname = Encoding.ASCII.GetBytes(vtextName);
+            byte[] vdata = Encoding.ASCII.GetBytes(vtextData);
+
+            int frameHeaderSize = 15;
+
+            int frameBodySize = vname.Length + 2 + vdata.Length+1;
+
+            int frameSize = frameHeaderSize + frameBodySize;
+
+            byte[] frame = new byte[frameSize];
 
             frame[0] = 0x00; // Transaction ID MSB
             frame[1] = 0x00; // Transaction ID LSB
@@ -194,7 +237,7 @@ namespace Domino
             frame[3] = 0x00; // Protocal ID LSB
 
             frame[4] = 0x00; // Nr following MSB
-            frame[5] = 0x10; // Nr following LSB
+            frame[5] = Convert.ToByte(8+frameBodySize+1); // Nr following LSB - 48 bytes
 
             frame[6] = 0x01; // Unit Identifier
             frame[7] = 0x65; // Fucntion code
@@ -205,25 +248,94 @@ namespace Domino
             frame[11] = 0x00; // Identifier Lo
             frame[12] = 0x01; // Number of string
 
-            frame[13] = 0x01; // File name
-            frame[14] = 0x04; // Following bytes
+            frame[13] = 0x03; // Variable Vtext-03
+            frame[14] = Convert.ToByte(vname.Length+2+vdata.Length+1); // Following bytes 39 bytes
+
+            int j = 14;
+            for (int i = 0; i < vname.Length; i++)
+            {
+                j++;
+                frame[j] = vname[i];
+            }
+
+            j++;
+            frame[j] = 0x00; // Nr of print MSB
+            j++;
+            frame[j] = 0x00; // Nr of print LSB
+
+            for (int i = 0; i < vdata.Length; i++)
+            {
+                j++;
+                frame[j] = vdata[i];
+            }
+
+            frame[frameSize-1] = 0x00; // Zero terminating
+            return frame;
+        }
+
+        #endregion
+
+        #region Parameter
+
+        private byte[] LoadMessageForPrinter(string msgName)
+        {
+            byte[] msg = Encoding.ASCII.GetBytes(msgName);
+
+            int frameSize = 17 + msg.Length;
+            int frameBodySize = 11 + msg.Length;
+
+            byte[] frame = new byte[frameSize];
+
+            frame[0] = 0x00; // Transaction ID MSB
+            frame[1] = 0x00; // Transaction ID LSB
+
+            frame[2] = 0x00; // Protocal ID MSB
+            frame[3] = 0x00; // Protocal ID LSB
+
+            frame[4] = 0x00; // Nr following MSB
+
+            frame[5] = Convert.ToByte(frameBodySize);
+
+            frame[6] = 0x01; // Unit Identifier
+            frame[7] = 0x65; // Fucntion code
+            frame[8] = 0x09; // Set_string
+            frame[9] = 0x00; // Status
+
+            frame[10] = 0x00; // Identifier Hi
+            frame[11] = 0x00; // Identifier Lo
+            frame[12] = 0x01; // Number of string
+
+            frame[13] = 0x01; // File name - 1
+            frame[14] = Convert.ToByte(1+msg.Length+1); //Print Group + Msg Name + 1
             frame[15] = 0x01; // Print Group
 
-            frame[16] = 0x64; // d
-            frame[17] = 0x7A; // z
+            for (int i = 0; i < msg.Length; i++)
+            {
+                frame[15 + i + 1] = msg[i];
+            }
 
-            frame[18] = 0x00; // Zero Teminating
+            frame[frameSize-1] = 0x00; // Zero Teminating
 
             return frame;
         }
+
+        #endregion
 
         private void btLoadMessage_Click(object sender, EventArgs e)
         {
             try
             {
-                byte[] frame = LoadMessageForPrinting();
+                byte[] frame = null;
+
+                if (ckHardcode.Checked)
+                    frame = LoadMessageForPrinting();
+                else
+                    frame = LoadMessageForPrinter(tbMessageName.Text);
+
                 tbSendMsg.Text = Display(frame);
                 SendToServer(frame);
+                byte[] receiveBuffer = ReceiveFromServer();
+                tbReceiveMsg.Text = Display(receiveBuffer);
             }
             catch (Exception ex)
             {
@@ -233,7 +345,23 @@ namespace Domino
 
         private void btSendVtextData_Click(object sender, EventArgs e)
         {
-            SendVtextDataToMessage();
+            try
+            {
+                byte[] frame = null;
+                if (ckHardcode.Checked)
+                    frame = SendVtextDataToMessage();
+                else
+                    frame = SendVtextDataToMessage(tbPin1.Text,"1234567890123456");
+
+                tbSendMsg.Text = Display(frame);
+                SendToServer(frame);
+                byte[] receiveBuffer = ReceiveFromServer();
+                tbReceiveMsg.Text = Display(receiveBuffer);
+            }
+            catch (Exception ex)
+            {
+                Alert(ex.Message);
+            }
         }
 
         private int SendToServer(byte[] frame)
@@ -245,12 +373,15 @@ namespace Domino
         {
             NetworkStream stream = new NetworkStream(_client);
 
+            byte[] bufferReceiver = null;
+
             if(stream.CanRead)
             {
-                int receiveSize = _client.Receive(_bufferReceiver, 0, SocketFlags.None);
-                Array.Resize(ref _bufferReceiver, receiveSize);
+                int bufferSize = _client.Receive(_bufferReceiver, 0, SocketFlags.None);
+                bufferReceiver = new byte[bufferSize];
+                Array.Copy(_bufferReceiver, bufferReceiver, bufferSize);
             }
-            return _bufferReceiver;
+            return bufferReceiver;
         }
 
         private void btReboot_Click(object sender, EventArgs e)
