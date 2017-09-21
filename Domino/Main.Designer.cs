@@ -49,6 +49,10 @@
             this.btReboot = new System.Windows.Forms.Button();
             this.btActivateGroup = new System.Windows.Forms.Button();
             this.btDeactivateGroup = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.tbSendMsg = new System.Windows.Forms.TextBox();
+            this.tbReceiveMsg = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.gvCards)).BeginInit();
             this.SuspendLayout();
             // 
@@ -106,19 +110,20 @@
             // 
             // btClose
             // 
-            this.btClose.Location = new System.Drawing.Point(588, 424);
+            this.btClose.Location = new System.Drawing.Point(588, 440);
             this.btClose.Name = "btClose";
             this.btClose.Size = new System.Drawing.Size(168, 23);
             this.btClose.TabIndex = 7;
             this.btClose.Text = "Close";
             this.btClose.UseVisualStyleBackColor = true;
+            this.btClose.Click += new System.EventHandler(this.btClose_Click);
             // 
             // gvCards
             // 
             this.gvCards.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gvCards.Location = new System.Drawing.Point(36, 202);
             this.gvCards.Name = "gvCards";
-            this.gvCards.Size = new System.Drawing.Size(516, 245);
+            this.gvCards.Size = new System.Drawing.Size(516, 203);
             this.gvCards.TabIndex = 8;
             // 
             // label3
@@ -234,11 +239,47 @@
             this.btDeactivateGroup.Text = "Deactivate Group";
             this.btDeactivateGroup.UseVisualStyleBackColor = true;
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(36, 412);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(102, 17);
+            this.label4.TabIndex = 23;
+            this.label4.Text = "Send Message:";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(36, 443);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(122, 17);
+            this.label5.TabIndex = 24;
+            this.label5.Text = "Receive Message:";
+            // 
+            // tbSendMsg
+            // 
+            this.tbSendMsg.Location = new System.Drawing.Point(165, 411);
+            this.tbSendMsg.Name = "tbSendMsg";
+            this.tbSendMsg.Size = new System.Drawing.Size(387, 23);
+            this.tbSendMsg.TabIndex = 25;
+            // 
+            // tbReceiveMsg
+            // 
+            this.tbReceiveMsg.Location = new System.Drawing.Point(164, 440);
+            this.tbReceiveMsg.Name = "tbReceiveMsg";
+            this.tbReceiveMsg.Size = new System.Drawing.Size(387, 23);
+            this.tbReceiveMsg.TabIndex = 26;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(773, 462);
+            this.ClientSize = new System.Drawing.Size(773, 475);
+            this.Controls.Add(this.tbReceiveMsg);
+            this.Controls.Add(this.tbSendMsg);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.btDeactivateGroup);
             this.Controls.Add(this.btActivateGroup);
             this.Controls.Add(this.btReboot);
@@ -293,6 +334,10 @@
         private System.Windows.Forms.Button btReboot;
         private System.Windows.Forms.Button btActivateGroup;
         private System.Windows.Forms.Button btDeactivateGroup;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox tbSendMsg;
+        private System.Windows.Forms.TextBox tbReceiveMsg;
     }
 }
 

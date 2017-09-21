@@ -23,7 +23,7 @@ namespace Domino
 
         private byte[] _bufferSender = null;
  
-        private Socket _socket = null;
+        private Socket _client = null;
 
         public Main()
         {
@@ -33,7 +33,7 @@ namespace Domino
      
             tbPort.Text = "502";
 
-            _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            _client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
         }
 
@@ -57,13 +57,13 @@ namespace Domino
             
             _bufferSender = new byte[WRITE_BUFFER_SIZE];
 
-            _socket.ReceiveBufferSize = READ_BUFFER_SIZE;
+            _client.ReceiveBufferSize = READ_BUFFER_SIZE;
 
-            _socket.SendBufferSize = WRITE_BUFFER_SIZE;
+            _client.SendBufferSize = WRITE_BUFFER_SIZE;
 
             IPEndPoint server = new IPEndPoint(IPAddress.Parse(ip),port);
             
-            _socket.Connect(server);
+            _client.Connect(server);
         }
 
         private void btDisconnect_Click(object sender, EventArgs e)
@@ -82,15 +82,15 @@ namespace Domino
 
         private void Disconnect()
         {
-            if (_socket.Connected)
+            if (_client.Connected)
             {
-                _socket.Close();
+                _client.Close();
             }
         }
 
         private byte[] Reboot()
         {
-            byte[] frame = new byte[9];
+            byte[] frame = new byte[10];
 
             frame[0] = 0x00; // Transaction ID MSB
             frame[1] = 0x00; // Transaction ID LSB
@@ -159,25 +159,25 @@ namespace Domino
             frame[35] = 0x00; // Nr of print MSB
             frame[36] = 0x00; // Nr of print LSB
 
-            frame[37] = 0x01; // First byte vtext content
-            frame[38] = 0x02;
-            frame[39] = 0x03;
-            frame[40] = 0x04;
+            frame[37] = 0x31; // First byte vtext content
+            frame[38] = 0x32;
+            frame[39] = 0x33;
+            frame[40] = 0x34;
 
-            frame[41] = 0x05;
-            frame[42] = 0x06;
-            frame[43] = 0x07; 
-            frame[44] = 0x08;
+            frame[41] = 0x35;
+            frame[42] = 0x36;
+            frame[43] = 0x37; 
+            frame[44] = 0x38;
 
-            frame[45] = 0x09;
-            frame[46] = 0x00;
-            frame[47] = 0x01;
-            frame[48] = 0x02;
+            frame[45] = 0x39;
+            frame[46] = 0x30;
+            frame[47] = 0x31;
+            frame[48] = 0x32;
 
-            frame[49] = 0x03;
-            frame[50] = 0x04;
-            frame[51] = 0x05;
-            frame[52] = 0x06; // End byte vtext content
+            frame[49] = 0x33;
+            frame[50] = 0x34;
+            frame[51] = 0x35;
+            frame[52] = 0x36; // End byte vtext content
 
             frame[53] = 0x00; // Zero terminating
             return frame;
@@ -219,7 +219,16 @@ namespace Domino
 
         private void btLoadMessage_Click(object sender, EventArgs e)
         {
-            LoadMessageForPrinting();
+            try
+            {
+                byte[] frame = LoadMessageForPrinting();
+                tbSendMsg.Text = Display(frame);
+                SendToServer(frame);
+            }
+            catch (Exception ex)
+            {
+                Alert(ex.Message);
+            }
         }
 
         private void btSendVtextData_Click(object sender, EventArgs e)
@@ -227,9 +236,58 @@ namespace Domino
             SendVtextDataToMessage();
         }
 
+        private int SendToServer(byte[] frame)
+        {
+            return _client.Send(frame, 0, frame.Length, SocketFlags.None);
+        }
+        
+        private byte[] ReceiveFromServer()
+        {
+            NetworkStream stream = new NetworkStream(_client);
+
+            if(stream.CanRead)
+            {
+                int receiveSize = _client.Receive(_bufferReceiver, 0, SocketFlags.None);
+                Array.Resize(ref _bufferReceiver, receiveSize);
+            }
+            return _bufferReceiver;
+        }
+
         private void btReboot_Click(object sender, EventArgs e)
         {
-            Reboot();
+            try
+            {
+               byte[] frame = Reboot();
+               tbSendMsg.Text = Display(frame);
+               SendToServer(frame);
+               byte[] receiveBuff = ReceiveFromServer();
+               tbReceiveMsg.Text = Display(receiveBuff);
+            }
+            catch (Exception ex)
+            {
+                Alert(ex.Message);
+            }
+        }
+
+        private string Display(byte[] data)
+        {
+            string msg = string.Empty;
+            foreach (var item in data)
+            {
+                msg += String.Format("{0:X2} ", item);
+            }
+
+            return msg;
+        }
+
+        private void Alert(string msg)
+        {
+            MessageBox.Show(msg, "Failed", MessageBoxButtons.OK);
+        }
+
+        private void btClose_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }
