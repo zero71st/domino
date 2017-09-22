@@ -350,7 +350,7 @@
             this.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "DominoTest";
-            this.Text = "Main";
+            this.Text = "DOMINO TEST";
             ((System.ComponentModel.ISupportInitialize)(this.gvCards)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
