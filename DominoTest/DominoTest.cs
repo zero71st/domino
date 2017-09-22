@@ -12,6 +12,8 @@ using System.Net;
 using System.Net.Sockets;
 using System.IO;
 using System.Threading;
+using System.Configuration;
+
 
 namespace DominoTest
 {
@@ -33,9 +35,9 @@ namespace DominoTest
         {
             InitializeComponent();
 
-            tbIPAddress.Text = "192.168.125.201";
-     
-            tbPort.Text = "502";
+            tbIPAddress.Text = System.Configuration.ConfigurationManager.AppSettings["ip"];
+            tbPort.Text =  System.Configuration.ConfigurationManager.AppSettings["port"];
+            tbMessageName.Text = System.Configuration.ConfigurationManager.AppSettings["msg"];
 
             Cards = new List<card>();
         }
