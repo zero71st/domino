@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Domino
+namespace DominoTest
 {
     static class Program
     {
@@ -16,7 +16,7 @@ namespace Domino
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Main());
+            Application.Run(new DominoTest());
         }
     }
 }
